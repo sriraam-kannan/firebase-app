@@ -9,9 +9,9 @@ function App() {
 
   console.log(user);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (!user && loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <BrowserRouter>
