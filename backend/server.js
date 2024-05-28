@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
+import routes from "./src/appRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -14,16 +15,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", authMiddleware);
-app.get("/api/metrics", async (req, res) => {
-  const user = req.user;
-
-  try {
-    res.status(200).json({ message: "Got all metrics", user });
-  } catch (error) {
-    res.status(500).send({ message: "something went wrong", error });
-  }
-});
+app.use("/api", authMiddleware, routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

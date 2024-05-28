@@ -1,23 +1,24 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider, useFirebaseAuth } from "./hooks/useFirebaseAuth";
+import { appRouter } from './AppRouter';
 
-import { Login } from "@/pages/Login";
-import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
-import Dashboard from "./pages/Dashboard";
 
 function App() {
   const { user, loading }: any = useFirebaseAuth();
 
-  console.log(user);
+  console.log(user); 
 
   // if (!user && loading) {
   //   return <div>Loading...</div>;
   // }
 
   return (
-    <BrowserRouter>
-      <>{user ? <Dashboard /> : <Login />}</>
-    </BrowserRouter>
+    // <BrowserRouter>
+    //   {user ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />}
+    // </BrowserRouter>
+    <AuthProvider>
+      <RouterProvider router={appRouter}/>
+    </AuthProvider>
   );
 }
-
 export default App;
