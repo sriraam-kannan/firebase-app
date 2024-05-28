@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
+import * as dotenv from "dotenv";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
+
 import routes from "./src/appRoutes.js";
+import './src/database/index.js'
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,7 +20,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", authMiddleware, routes);
+app.use("/api", routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

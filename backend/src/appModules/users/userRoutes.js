@@ -5,16 +5,16 @@ export default function userRoutes() {
 	const router = express.Router();
 	
     //Step 1: Create Permissions Constants
-	router.get('/permissions', getPermissions);
-    router.get('/createPermission', createPermission);
+	router.get('/getPermissions', getPermissions); 
+    router.post('/createPermission', createPermission); 
 
     //Step 2: Create Role with Permissions
-    router.get('/roles', getRoles);
-	router.post('/createRole', createRole);
+    router.get('/getRoles', getRoles); 
+	router.post('/createRole', createRole); 
     // router.get('/assignPermissionToRole', assignPermissionToRole)
 
     //Step 3: Create User with Role
-	router.get('/users', getUsers);
+	router.get('/getUsers', getUsers); 
     router.post('/createUser', createUser);
     // router.post('/assignRoleToUser', assignRoleToUser)
 
