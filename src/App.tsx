@@ -1,12 +1,14 @@
 import { BrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider, useFirebaseAuth } from "./hooks/useFirebaseAuth";
-import { appRouter } from './AppRouter';
+import { appRouter } from "./AppRouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 
 function App() {
-  const { user, loading }: any = useFirebaseAuth();
+  // const { user, loading }: any = useFirebaseAuth();
 
-  console.log(user); 
+  // console.log(user);
 
   // if (!user && loading) {
   //   return <div>Loading...</div>;
@@ -16,9 +18,11 @@ function App() {
     // <BrowserRouter>
     //   {user ? <AuthenticatedRoutes /> : <UnauthenticatedRoutes />}
     // </BrowserRouter>
-    <AuthProvider>
-      <RouterProvider router={appRouter}/>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={appRouter} />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 export default App;

@@ -8,8 +8,10 @@ POST {{baseUrl}}/users/createPermission HTTP/1.1
 Content-Type: application/json
 
 {
-    "permission_name":"REPORTS_REPORT2_VIEW",
-    "module":"Report"
+    "group":"MODULE",
+    "entity": "ENTITY",
+    "actions":"EDIT,CREATE,DELETE,VIEW",
+    "createdBy":""
 }
 
 ### Get Roles
@@ -23,7 +25,7 @@ Content-Type: application/json
     "name":"",
     "description":"",
     "created_by": "",
-    "permissions":[    ]
+    "permissions":[]
 }
 
 ### Get Users

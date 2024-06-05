@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     return () => unsubscribe();
   }, []);
-
   const value = useMemo(
     () => ({ user, loading, signInWithGoogle, signOutUser }),
     [user]

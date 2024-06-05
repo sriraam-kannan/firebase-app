@@ -19,16 +19,25 @@ export const getPermissions = async (req, res) => {
 };
 
 export const createPermission = async (req, res) => {
+  const { group,entity, actions, createdBy } = req.body;
+  
+  const permissionName = actions.split(",").map(item => { 
+    const trimmedItem = item.trim();
+    return {
+        permission_name: `${group}_${entity}_${item.trim()}`,
+        group: group,
+        entity: entity,
+        created_by: createdBy,
+        created_at: timestamp,
+        action: trimmedItem,
+      };
+  })
     try{
-  const { permission_name, module, user } = req.body;
-  const createPermission = await getDatabase()
-    .insert({
-      permission_name: permission_name,
-      module: module,
-      created_by: user,
-      created_at: timestamp,
-    })
-    .into("core.c_permissions");
+  const createPermission = await getDatabase()("core.c_permissions")
+    .insert(permissionName)
+    .onConflict('permission_name')
+    .merge();
+
   res.status(200).send({ message: "Permission created!", data: createPermission });
 } catch (e) {
     console.error("Error creating permission!", e);
@@ -38,13 +47,12 @@ export const createPermission = async (req, res) => {
       errorStack: e?.stack,
     });
   }
-
 };
 
 export const getRoles = async (req, res) => {
     try{
   const getRoles = await getDatabase()
-    .select("id", "name", "permissions")
+    .select("id", "name", "permissions","description")
     .from("core.ac_roles");
   res.status(200).send({ message: "List of roles", data: getRoles });
 } catch (e) {

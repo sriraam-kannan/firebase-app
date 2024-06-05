@@ -4,12 +4,9 @@ import {
   Bell,
   Home,
   LineChart,
-  Package,
   Package2,
-  ShoppingCart,
   Users,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 export default function Sidebar() {
