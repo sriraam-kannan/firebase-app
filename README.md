@@ -1,2 +1,1 @@
-# Firebase App
-# firebase-app
+# React Auth App

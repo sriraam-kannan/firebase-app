@@ -1,11 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
 
 import { Login } from "@/pages/Login";
-import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
+import { useAuth } from "./hooks/useAuth";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const { user, loading }: any = useFirebaseAuth();
+  const { user, loading }: any = useAuth();
 
   console.log(user);
 
