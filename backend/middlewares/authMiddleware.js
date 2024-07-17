@@ -1,7 +1,6 @@
-import { admin } from "../firebaseAdmin.js";
-
 export const authMiddleware = async (req, res, next) => {
   const token = req.headers.token;
+  const admin = {};
 
   try {
     const decodedUser = await admin.auth().verifyIdToken(token);
