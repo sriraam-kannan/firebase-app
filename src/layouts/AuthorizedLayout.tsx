@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import Header from "@/components/ui/header";
 import Sidebar from "@/components/ui/sidebar";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+
 
 export default function AuthorizedLayout() {
   const user: any = localStorage.getItem("neouser");
@@ -14,7 +14,7 @@ export default function AuthorizedLayout() {
 
   if (!parsedUser) {
     console.log("user not logged in", parsedUser);
-    return <Navigate to="login" />;
+    return <Navigate to="/login" />;
   }
 
   return (

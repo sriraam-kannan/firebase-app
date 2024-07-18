@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,11 +17,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", authMiddleware);
-app.get("/api/metrics", async (req, res) => {
+app.get("/api/response", async (req, res) => {
   const user = req.user;
 
   try {
-    res.status(200).json({ message: "Got all metrics", user });
+    res.status(200).json({ message: "Successful response", user });
   } catch (error) {
     res.status(500).send({ message: "something went wrong", error });
   }

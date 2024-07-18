@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { CircleUser } from "lucide-react";
 import { signOut } from "aws-amplify/auth";
 
@@ -10,9 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { redirect } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <div className="w-full flex-1"></div>
@@ -33,7 +34,9 @@ export default function Header() {
             onClick={() => {
               signOut();
               localStorage.removeItem("neouser");
-              redirect("/login");
+              localStorage.removeItem("user_email");
+              localStorage.removeItem("idToken");
+              navigate("/login");
             }}
           >
             Logout

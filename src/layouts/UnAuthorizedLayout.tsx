@@ -3,13 +3,14 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function UnAuthorizedLayout() {
-  const { currentUser, loading } = useCurrentUser();
-  const { username } = currentUser || {};
 
-  // if (username) {
-  //   console.log("user already logged in", username);
-  //   return <Navigate to="/" replace={true} />;
-  // }
+  const user:any = localStorage.getItem("neouser");
+  const parsedUser = JSON.parse(user);
+
+  if (parsedUser) {
+    console.log("user already logged in", parsedUser);
+    return <Navigate to="/" replace={true} />;
+  }
 
   return (
     <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">

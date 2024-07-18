@@ -1,28 +1,43 @@
-import { Link, redirect } from "react-router-dom";
-import { getCurrentUser, signIn } from "aws-amplify/auth";
+import { Link,  useNavigate } from "react-router-dom";
+import { getCurrentUser, signIn, fetchAuthSession } from "aws-amplify/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function Login() {
+  const navigate = useNavigate();
   const onClickLogin = async (event: any) => {
     event.preventDefault();
+  
+
+    const form = event.currentTarget;
+
+    try{
+      const signInoptions = await signIn({
+        username: form.elements.email.value,
+        password: form.elements.password.value,
+      });
+
+      const currentUser = await getCurrentUser();
+      localStorage.setItem("neouser", JSON.stringify(currentUser));
+      const session:any = await fetchAuthSession();
+      localStorage.setItem('idToken', JSON.stringify(session?.tokens?.idToken?.toString()));
+
+      localStorage.setItem('user_email', JSON.stringify(session?.tokens?.signInDetails?.loginId?.toString()));
+
+
+    }catch(error){
+      console.error("Unable to login",error)
+    };
+
     const user: any = localStorage.getItem("neouser");
     const parsedUser = JSON.parse(user);
     if (parsedUser) {
       console.log("redirect");
-      redirect("/");
+      navigate("/");
       return;
     }
-    const form = event.currentTarget;
-    const signInoptions = await signIn({
-      username: form.elements.email.value,
-      password: form.elements.password.value,
-    });
-    console.log(signInoptions);
-    const currentUser = await getCurrentUser();
-    localStorage.setItem("neouser", JSON.stringify(currentUser));
   };
 
   return (

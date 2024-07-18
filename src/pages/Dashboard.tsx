@@ -1,9 +1,24 @@
+import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import neoAxios from "../lib/neoAxios";
 
 export default function Dashboard() {
   const user = useCurrentUser();
   const loginId = user?.currentUser?.signInDetails?.loginId;
-  console.log(loginId);
+
+  const onclickButton = async()=>{
+    try{
+      console.log("api hit")
+      const sampleCall= await neoAxios.get('/response');
+      console.log(sampleCall.data)
+
+    }catch(error){
+      console.error("API failed", error)
+    }
+    
+
+  }
+
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -11,6 +26,11 @@ export default function Dashboard() {
         <h1 className="text-lg font-semibold md:text-2xl">
           Welcome, {loginId}
         </h1>
+        <>
+        <div>
+          <Button onClick={onclickButton}>Click</Button>
+        </div>
+        </>
       </div>
     </main>
   );
