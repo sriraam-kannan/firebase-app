@@ -6,7 +6,7 @@ export default function Dashboard() {
   const user = useCurrentUser();
   const loginId = user?.currentUser?.signInDetails?.loginId;
 
-  const onclickButton = async () => {
+  const onClickProfile = async () => {
     try {
       console.log("api hit");
       const sampleCall = await neoAxios.get("/profile");
@@ -24,7 +24,7 @@ export default function Dashboard() {
         </h1>
         <>
           <div>
-            <Button onClick={onclickButton}>Click</Button>
+            <Button onClick={onClickProfile}>Profile</Button>
           </div>
         </>
       </div>

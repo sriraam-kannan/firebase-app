@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:3000/api
+
+## Create User
+POST {{baseUrl}}/createUser
+Content-Type: application/json
+
+{
+    "username": "dev@tenant2.com",
+    "password": "string"
+}

@@ -11,24 +11,26 @@ export default function Login() {
   const onClickLogin = async (event: any) => {
     event.preventDefault();
     const form = event.currentTarget;
-    
+
     try {
-      const signInoptions = await signIn({
+      await signIn({
         username: form.elements.email.value,
         password: form.elements.password.value,
       });
 
       const currentUser = await getCurrentUser();
-      localStorage.setItem("neouser", JSON.stringify(currentUser));
       const session: any = await fetchAuthSession();
-      localStorage.setItem(
-        "idToken",
-        JSON.stringify(session?.tokens?.idToken?.toString())
-      );
+      const tokens = session?.tokens || {};
+      const idToken = tokens.idToken?.toString();
+      const userEmail = tokens.signInDetails?.loginId?.toString();
 
       localStorage.setItem(
-        "user_email",
-        JSON.stringify(session?.tokens?.signInDetails?.loginId?.toString())
+        "neouser",
+        JSON.stringify({
+          ...currentUser,
+          idToken,
+          userEmail,
+        })
       );
     } catch (error) {
       console.error("Unable to login", error);

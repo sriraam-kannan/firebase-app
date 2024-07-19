@@ -1,13 +1,9 @@
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import {
-  CognitoIdentityProviderClient,
-  AdminSetUserPasswordCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
 import type { Context, Next } from "hono";
 
 export const authMiddleware = async (c: Context, next: Next) => {
-  const token = c.req.header("idtoken");
   try {
+    const token: any = c.req.header("token");
     console.log("token:", token);
     const verifier = CognitoJwtVerifier.create({
       userPoolId: process.env.COGNITO_USER_POOL_ID || "",
@@ -21,7 +17,7 @@ export const authMiddleware = async (c: Context, next: Next) => {
     });
     console.log("payload", payload);
     c.set("user", payload);
-    next();
+    await next();
   } catch (e: any) {
     return c.json(
       {

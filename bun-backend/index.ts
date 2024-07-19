@@ -1,12 +1,14 @@
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
+import { logger } from "hono/logger";
 
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { createUser } from "./controllers/userController";
 
 const app = new Hono();
 
-app.use(cors()); // Enable all CORS requests
+app.use(logger());
+app.use(cors());
 
 app.get("/", async (c) => {
   c.json({
@@ -14,17 +16,16 @@ app.get("/", async (c) => {
   });
 });
 
-app.use("/api", authMiddleware);
+app.use("/api/*", authMiddleware);
 app.get("/api/profile", async (c: Context) => {
-  const user = c.get("user");
-
   try {
-    c.json({ message: "Successful response", user });
+    const user = c.get("user");
+    return c.json({ message: "Successful response", user });
   } catch (error) {
-    c.json({ message: "something went wrong", error });
+    return c.json({ message: "something went wrong", error });
   }
 });
 
-app.get("/api/createUser", createUser);
+app.post("/api/createUser", createUser);
 
 export default app;
