@@ -8,9 +8,8 @@ export default function Dashboard() {
 
   const onClickProfile = async () => {
     try {
-      console.log("api hit");
-      const sampleCall = await neoAxios.get("/profile");
-      console.log(sampleCall.data);
+      const userApiData = await neoAxios.post("/getUserProfile");
+      console.log(userApiData.data);
     } catch (error) {
       console.error("API failed", error);
     }

@@ -8,7 +8,6 @@ neoAxios.interceptors.request.use(
   (config) => {
     const neouser = localStorage.getItem("neouser");
     const parsedNeoUser = JSON.parse(neouser);
-    console.log(parsedNeoUser.idToken);
     config.headers["token"] = parsedNeoUser.idToken;
 
     return config;
