@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 
 /** Authorized Pages */
 import Dashboard from "./pages/Dashboard";
+import ReportsRouter from "./pages/Reports/ReportsRouter";
 
 export const appRouter = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ export const appRouter = createBrowserRouter([
         index: true,
         element: <Dashboard />,
       },
+      { path: "/reports/*", element: <ReportsRouter /> },
     ],
   },
   {

@@ -22,7 +22,7 @@ Token: {{token}}
 }
 
 
-### Get user details
-GET {{baseUrl}}/getUserDetails
+### Get reports
+GET {{baseUrl}}/getReports
 Content-Type: application/json
 Token: {{token}}

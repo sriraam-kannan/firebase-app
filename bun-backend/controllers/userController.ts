@@ -91,24 +91,21 @@ const getUserProfile = async (c: Context) => {
   }
 };
 
-const getUserDetails = async (c: Context) => {
+const getReports = async (c: Context) => {
   try {
     const user = c.get("user");
-    const email = user.email;
-
     const tenantDb = c.get("tenantDb");
-    const database = getDbInstance(tenantDb);
 
-    const userDetails = await database("users").where({ email }).first();
+    const reports = await tenantDb("deals").orderBy("id", "asc");
 
     return c.json({
-      message: "User details fetched successfully",
-      userDetails,
+      message: "Report fetched successfully",
+      data: reports,
     });
   } catch (e) {
     console.log(e);
-    return c.json({ message: "Error getting user details", error: e }, 500);
+    return c.json({ message: "Error getting reports data", error: e }, 500);
   }
 };
 
-export { createUser, getUserProfile, getUserDetails };
+export { createUser, getUserProfile, getReports };

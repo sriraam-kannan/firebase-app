@@ -1,6 +1,6 @@
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import type { Context, Next } from "hono";
-import { getDbInstance, setTenantDb } from "../database/dbConfig";
+import { getDbInstance, getTenantDb, setTenantDb } from "../database/dbConfig";
 import { clientDatabase } from "../database/dbConstants";
 
 export const authMiddleware = async (c: Context, next: Next) => {
@@ -22,25 +22,26 @@ export const authMiddleware = async (c: Context, next: Next) => {
     // Client database verification function
     const email: any = payload?.email || "";
     const tenantEmailDomain = email.split("@")[1];
-    const tenantName = payload["custom:tenant_name"];
 
-    // Compare tenantEmailDomain with custom:tenant_name in clientDatabase
-    if (clientDatabase[tenantEmailDomain] === tenantName) {
-      // Use core DB to check if the client exists
-      const coreDb = getDbInstance("core");
-      const client = await coreDb("client").where({ name: tenantName }).first();
+    let tenantName: any = payload["custom:tenant_name"];
+    if (tenantName && typeof tenantName !== "string") {
+      tenantName = tenantName.toString();
+    }
 
-      if (client) {
-        // Set the tenantDb based on the client's DB name
-        const tenantDb = clientDatabase[tenantEmailDomain];
-        setTenantDb(tenantDb);
-        c.set("tenantDb", tenantDb);
-        console.log("tenantDb", tenantDb);
-      } else {
-        throw new Error("Client does not exist in core database");
-      }
+    setTenantDb(tenantName);
+
+    const tenantDb = getDbInstance(tenantName);
+    const userEmail: any = payload?.email;
+
+    const userDetails = await tenantDb("users")
+      .where({ email: userEmail })
+      .first();
+
+    if (userDetails) {
+      c.set("userDetails", userDetails); //to set additional information like roles and permissions
+      c.set("tenantDb", tenantDb);
     } else {
-      throw new Error("Tenant name and email domain do not match");
+      throw new Error(" This user does not exist in database");
     }
 
     await next();

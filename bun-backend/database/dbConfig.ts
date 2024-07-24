@@ -7,6 +7,7 @@ const dbInstances: { [key: string]: KnexType } = {
   core: Knex(knexConfig.core),
   tenant1: Knex(knexConfig.tenant1),
   tenant2: Knex(knexConfig.tenant2),
+  tenant3: Knex(knexConfig.tenant3),
 };
 
 let tenantDb: KnexType | null = null;
