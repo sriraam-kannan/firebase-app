@@ -32,6 +32,12 @@ export default function Login() {
           userEmail,
         })
       );
+      const user: any = localStorage.getItem("neouser");
+      const parsedUser = JSON.parse(user);
+      if (parsedUser) {
+        navigate("/");
+        return;
+      }
     } catch (error) {
       console.error("Unable to login", error);
     }
