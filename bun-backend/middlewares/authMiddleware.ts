@@ -20,8 +20,6 @@ export const authMiddleware = async (c: Context, next: Next) => {
     c.set("user", payload);
 
     // Client database verification function
-    const email: any = payload?.email || "";
-    const tenantEmailDomain = email.split("@")[1];
 
     let tenantName: any = payload["custom:tenant_name"];
     if (tenantName && typeof tenantName !== "string") {

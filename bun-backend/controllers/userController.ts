@@ -19,7 +19,7 @@ const client = new CognitoIdentityProviderClient({
 const createUser = async (c: Context) => {
   try {
     const body = await c.req.json();
-    const { username, password, tenant_name } = body;
+    const { username, password, tenant_name, role } = body;
     // Create User Command
     const createUserInput: AdminCreateUserCommandInput = {
       UserPoolId: process.env.COGNITO_USER_POOL_ID,
@@ -28,6 +28,18 @@ const createUser = async (c: Context) => {
         {
           Name: "custom:tenant_name",
           Value: tenant_name,
+        },
+        {
+          Name: "custom:role",
+          Value: role,
+        },
+        {
+          Name: "email",
+          Value: username,
+        },
+        {
+          Name: "email_verified",
+          Value: "true",
         },
       ],
     };
