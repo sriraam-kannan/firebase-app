@@ -14,7 +14,7 @@ import ReportsRouter from "./pages/Reports/ReportsRouter";
 export const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <AuthorizedLayout />, //change to protected layout
+    element: <AuthorizedLayout />,
     children: [
       {
         index: true,

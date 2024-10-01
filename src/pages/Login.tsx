@@ -1,5 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { getCurrentUser, signIn, fetchAuthSession } from "aws-amplify/auth";
+import {
+  getCurrentUser,
+  signIn,
+  fetchAuthSession,
+  signInWithRedirect,
+} from "aws-amplify/auth";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +56,41 @@ export default function Login() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      console.log("Sign in with google in useAuth hook");
+      await signInWithRedirect({ provider: "Google" });
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    } finally {
+      console.log("finally  block");
+      await getToken();
+    }
+  };
+
+  const getToken = async () => {
+    console.log("getToken block");
+    const currentUser = await getCurrentUser();
+    const session: any = await fetchAuthSession();
+    const tokens = session?.tokens || {};
+    const idToken = tokens.idToken?.toString();
+    const userEmail = tokens.signInDetails?.loginId?.toString();
+
+    localStorage.setItem(
+      "neouser",
+      JSON.stringify({
+        ...currentUser,
+        idToken,
+        userEmail,
+      })
+    );
+    const user: any = localStorage.getItem("neouser");
+    const parsedUser = JSON.parse(user);
+    if (parsedUser) {
+      navigate("/");
+      return;
+    }
+  };
   return (
     <div className="mx-auto grid w-[350px] gap-6">
       <div className="grid gap-2 text-center">
@@ -85,8 +125,15 @@ export default function Login() {
         <Button type="submit" className="w-full">
           Login
         </Button>
-        <Button variant="outline" className="w-full">
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleSignIn}
+        >
           Login with Google
+        </Button>
+        <Button variant="outline" className="w-full" onClick={getToken}>
+          getToken
         </Button>
       </form>
       <div className="mt-4 text-center text-sm">

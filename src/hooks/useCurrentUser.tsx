@@ -11,7 +11,7 @@ export function useCurrentUser() {
         const user: any = localStorage.getItem("neouser");
         const parsedUser = JSON.parse(user);
         setCurrentUser(parsedUser);
-        console.log(parsedUser);
+        console.log("in useCurrentUser", parsedUser);
       } catch (error) {
         console.error("Error fetching current user:", error);
       } finally {
